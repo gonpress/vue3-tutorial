@@ -1,9 +1,10 @@
 <template>
-  <div class="card text-center">
+  <div class="container border text-center">
     <div class="header">
+      <div class="item-left">상품 상세정보</div>
       <div class="item-right"><button type="button" class="btn btn-danger" @click="deleteModal(product._id)">상품삭제</button><button type="button" class="btn btn-info" @click="editProduct(product._id)">상품수정</button></div>
     </div>
-    <div class="card-header">상품</div>
+    <div class="card-header border">상품</div>
     <div class="product" v-if="!loading">
       <div class="product-left border-right"><img :src="product.img" /></div>
       <div class="product-right">
@@ -11,12 +12,12 @@
         <div class="product-right name">{{ product.name }}</div>
         <div class="product-right price">{{ product.price }}원</div>
         <div class="product-right-bottom">
-          <div class="pb-3 pt-3"><button type="button" class="btn btn-primary">구매</button></div>
-          <div class="pb-3 pt-3"><button type="button" class="btn btn-warning" @click="backPage()">취소</button></div>
+          <div class="pb-3 pt-3"><button type="button" class="btn btn-primary" @click="orderItem(product)">장바구니</button></div>
+          <div class="pb-3 pt-3"><button type="button" class="btn btn-warning" @click="backPage()">뒤로가기</button></div>
         </div>
       </div>
     </div>
-    <div class="card-header border-top">상품 상세설명 </div>
+    <div class="card-header border">상품 상세설명 </div>
     <div class="product-bottom desc">
       {{product.desc}}
     </div>
@@ -26,15 +27,17 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
-import {ref} from 'vue';
+import { ref} from 'vue';
 import axios from 'axios';
 import Modal from '@/components/Modal.vue';
+import {useStore} from 'vuex';
 
 export default {
   components:{
     Modal
   },
   setup(){
+    const store = useStore();
     const route = useRoute();
     const router = useRouter();
     const product = ref({
@@ -62,6 +65,13 @@ export default {
 
     getProduct();
 
+    const orderItem = async (id) => {
+      try {
+        store.dispatch('addCartProduct', id);
+      }catch (e) {
+        console.log(e);
+      }
+    }
     const backPage = () => {
       router.push(`/products`);
     }
@@ -110,6 +120,7 @@ export default {
       closeModal,
       deleteModal,
       modal,
+      orderItem,
     }
   }
 }
@@ -119,21 +130,30 @@ export default {
 .header{
   display:flex;
 }
+.item-left{
+  flex:3;
+  text-align: center;
+}
 .item-right{
+  flex:1;
+  text-align: right;
   margin-left: auto;
 }
 .product{
   display:flex;
+  align-items: center;
+  width:100%;
 }
 .product-left{
-  padding-top:15px;
   padding-left:15px;
   padding-right:15px;
+  flex:1;
 }
 .product-right{
   display:flex;
   flex-direction: column;
   align-items:center;
+  flex:4;
 }
 .product-right-bottom{
   display:flex;
@@ -156,6 +176,7 @@ export default {
 .product-bottom{
 }
 .btn{
+  margin: 5px 5px 5px 5px;
   width:100px;
 }
 </style>

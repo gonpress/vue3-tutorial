@@ -1,6 +1,6 @@
 <template>
-  <div class="container border col-8">
-    <form>
+  <div class="container border">
+    <form class="form">
       <div class="form-group">
         <label for="inputBrand">브랜드</label>
         <input type="text" class="form-control" id="inputBrand" name="inputBrand" v-model="data.brand">
@@ -60,8 +60,11 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.form{
+  width:100%;
+  margin-top: 10px;
   display: flex;
+  flex-direction: column;
 }
 .right{
   margin-bottom:15px;

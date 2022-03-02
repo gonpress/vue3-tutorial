@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="header border">
+      <div class="left">상품목록</div>
       <div class="right"><button class="btn btn-success" @click="moveToCreate()">상품등록</button></div>
     </div>
     <div class="body border">
@@ -22,11 +23,13 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import {useRouter} from 'vue-router';
-
+import {useStore} from 'vuex';
 export default {
 
   setup() {
     const router = useRouter();
+    const store = useStore();
+    console.log(store.state);
 
     const products = ref([]);
     const getProducts = async () =>{
@@ -62,9 +65,15 @@ export default {
   padding-bottom:5px;
   display:flex;
 }
+.left{
+  flex:3;
+  text-align: center;
+}
 .right{
+  flex:1;
   margin-left: auto;
   margin-right:15px;
+  text-align: right;
 }
 .body{
   display:flex;

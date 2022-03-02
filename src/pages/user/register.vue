@@ -13,7 +13,7 @@
         <label for="inputName">이름</label>
         <input type="text" class="form-control" id="inputName" v-model="data.name">
       </div>
-      <button type="button" class="btn btn-primary" @click="register()">등록</button>
+      <button type="button" class="btn btn-success" @click="register()">등록</button>
       <button type="button" class="btn btn-warning" @click="moveToBack()">취소</button>
     </form>
   </div>

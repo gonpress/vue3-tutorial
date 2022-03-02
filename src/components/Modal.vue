@@ -12,8 +12,8 @@
             <p>{{ modal.body }}</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="onClose()">Close</button>
-            <button type="button" class="btn btn-danger" @click="onDelete()">Delete</button>
+            <button type="button" class="btn btn-danger" @click="onDelete()">삭제</button>
+            <button type="button" class="btn btn-secondary" @click="onClose()">닫기</button>
           </div>
         </div>
     </div>

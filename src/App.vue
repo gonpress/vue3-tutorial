@@ -11,6 +11,7 @@ export default{
     Header
   },
   setup(){
+
     const greeting = (hh) => {
       return hh;
     }
