@@ -23,20 +23,25 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import {useRouter} from 'vue-router';
-import {useStore} from 'vuex';
-export default {
+import { useCookies } from "vue3-cookies";
 
+export default {
   setup() {
+    const { cookies } = useCookies();
+    cookies.set("myCoookie", "abcdefg");
+
+    console.log(cookies.get('myCoookie'));
+    console.log(cookies.get('user'));
     const router = useRouter();
-    const store = useStore();
-    console.log(store.state);
 
     const products = ref([]);
+    const headers = {
+    "Authorization" : `Bearer ${cookies.get('user')}`,
+    }
     const getProducts = async () =>{
       try{
-        const res = await axios.get('http://localhost:8000/products');
+        const res = await axios.get('http://localhost:8000/products', {headers});
         products.value = res.data.products;
-
       } catch(e){
         console.log(e);
       }

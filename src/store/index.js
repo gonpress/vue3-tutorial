@@ -6,7 +6,6 @@ export default createStore({
     },
     mutations:{
         ADD_CART_PRODUCT (state, payload) {
-            console.log(payload);
             state.cart.push({name:payload.name, price:payload.price, brand:payload.brand, img:payload.img});
         },
         DEL_CART_PRODUCT (state, payload) {

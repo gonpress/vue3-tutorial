@@ -3,11 +3,11 @@
     <form>
       <div class="form-group">
         <label for="inputEmail">이메일</label>
-        <input type="email" class="form-control" id="inputEmail" v-model="data.email">
+        <input type="email" class="form-control" id="inputEmail" v-model="data.email"  @keyup.enter="login()">
       </div>
       <div class="form-group">
         <label for="inputPassword">비밀번호</label>
-        <input type="password" class="form-control" id="inputPassword" v-model="data.password">
+        <input type="password" class="form-control" id="inputPassword" v-model="data.password" @keyup.enter="login()">
       </div>
       <button type="button" class="btn btn-primary" @click="login()">로그인</button>
       <button type="button" class="btn btn-success" @click="moveToRegister()">회원가입</button>
@@ -30,7 +30,7 @@ export default {
     })
     const login = async () => {
       try{
-        const res = await axios.post('http://localhost:8000/user/login', data.value);
+        const res = await axios.post('http://localhost:8000/user/login', data.value, {withCredentials:true});
         console.log(res);
       }catch (e) {
         console.error(e);

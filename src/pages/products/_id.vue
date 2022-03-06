@@ -1,5 +1,5 @@
 <template>
-  <div class="container border text-center">
+  <div class="container border text-center" v-if="authorized">
     <div class="header">
       <div class="item-left">상품 상세정보</div>
       <div class="item-right"><button type="button" class="btn btn-danger" @click="deleteModal(product._id)">상품삭제</button><button type="button" class="btn btn-info" @click="editProduct(product._id)">상품수정</button></div>
@@ -22,6 +22,7 @@
       {{product.desc}}
     </div>
   </div>
+  <div class="container border text-center" v-if="!authorized">조회 권한이 없습니다.</div>
   <Modal v-if="showModal" :modal="modal" @close="closeModal()" @delete="deleteProduct()" />
 </template>
 
@@ -31,12 +32,14 @@ import { ref} from 'vue';
 import axios from 'axios';
 import Modal from '@/components/Modal.vue';
 import {useStore} from 'vuex';
+import { useCookies } from "vue3-cookies";
 
 export default {
   components:{
     Modal
   },
   setup(){
+    const { cookies } = useCookies();
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
@@ -49,16 +52,26 @@ export default {
     const loading = ref(false);
     const showModal = ref(false);
     const deleteProductId = ref(null);
+    const authorized = ref(false);
 
     const getProduct = async () => {
       loading.value = true;
       try {
-        const res = await axios.get(`http://localhost:8000/products/${route.params.id}`);
-        console.log(res.data);
+        const headers = {
+          "Authorization" : '',
+        }
+        if(cookies.get('user'))
+        {
+          headers.Authorization = `Bearer ${cookies.get('user')}`;
+        }
+        const res = await axios.get(`http://localhost:8000/products/${route.params.id}`, {headers});
+
         product.value = res.data;
         loading.value=false;
+        authorized.value=true;
       } catch (e) {
         loading.value=false;
+        authorized.value=false;
         console.error(e);
       }
     };
@@ -121,6 +134,7 @@ export default {
       deleteModal,
       modal,
       orderItem,
+      authorized,
     }
   }
 }

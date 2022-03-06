@@ -19,6 +19,9 @@
           <router-link class="nav-link" to="/orders">주문목록</router-link>
         </li>
       </ul>
+      <ul class="navbar-info">
+        <div v-if="!loggedin">반가워요</div>
+      </ul>
     </div>
   </nav>
 </template>
@@ -30,5 +33,15 @@ export default {
 </script>
 
 <style scoped>
-
+#navbarNav{
+  display:flex;
+}
+.navbar-nav{
+  flex:8;
+  text-align: left;
+}
+.navbar-info{
+  flex:1;
+  margin-left: auto;
+}
 </style>
