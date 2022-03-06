@@ -10,25 +10,45 @@
           <router-link class="nav-link" to="/">홈</router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/login">로그인</router-link>
-        </li>
-        <li class="nav-item">
           <router-link class="nav-link" to="/products">상품목록</router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" to="/orders">주문목록</router-link>
         </li>
       </ul>
-      <ul class="navbar-info">
-        <div v-if="!loggedin">반가워요</div>
+      <ul class="navbar-nav navbar-info">
+        <li class="nav-item" v-if="loggedin">
+          <div class="nav-link">반가워요 {{name}} 님!</div>
+        </li>
+        <li class="nav-item" v-if="!loggedin">
+          <router-link class="nav-link" to="/login">로그인</router-link>
+        </li>
+        <li class="nav-item" v-if="loggedin">
+          <router-link class="nav-link" to="/logout">로그아웃</router-link>
+        </li>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
+import {useStore} from "vuex";
+import {computed, ref} from "vue";
 export default {
-  name: "Header"
+  name: "Header",
+  setup(){
+    const store = useStore();
+
+    const loggedin = computed(() => { return store.getters.isAuthenticated ? true : false } );
+    const name = computed(() => { return store.state.user.name});
+    const email = ref(null);
+
+    return {
+      loggedin,
+      name,
+      email,
+    }
+  }
 }
 </script>
 
@@ -41,7 +61,7 @@ export default {
   text-align: left;
 }
 .navbar-info{
-  flex:1;
+  flex:2;
   margin-left: auto;
 }
 </style>

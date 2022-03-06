@@ -17,12 +17,13 @@
 
 <script>
 import {useRouter} from 'vue-router';
-import axios from 'axios';
 import {ref} from 'vue';
+import {useStore} from "vuex";
 
 export default {
   name: "login.vue",
   setup(){
+    const store = useStore();
     const router = useRouter();
     const data = ref({
       email:'',
@@ -30,8 +31,11 @@ export default {
     })
     const login = async () => {
       try{
-        const res = await axios.post('http://localhost:8000/user/login', data.value, {withCredentials:true});
-        console.log(res);
+        // const res = await axios.post('http://localhost:8000/user/login', data.value, {withCredentials:true});
+        // console.log(res.data.token);
+        await store.dispatch('login', data.value);
+        router.push('/');
+        console.log(store.state);
       }catch (e) {
         console.error(e);
       }

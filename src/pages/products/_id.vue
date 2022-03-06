@@ -32,14 +32,12 @@ import { ref} from 'vue';
 import axios from 'axios';
 import Modal from '@/components/Modal.vue';
 import {useStore} from 'vuex';
-import { useCookies } from "vue3-cookies";
 
 export default {
   components:{
     Modal
   },
   setup(){
-    const { cookies } = useCookies();
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
@@ -54,24 +52,21 @@ export default {
     const deleteProductId = ref(null);
     const authorized = ref(false);
 
+    const authCheck = async() => {
+      if(store.getters.isAuthenticated) authorized.value = true;
+      else { authorized.value=false; }
+    }
+
+    authCheck();
     const getProduct = async () => {
       loading.value = true;
       try {
-        const headers = {
-          "Authorization" : '',
-        }
-        if(cookies.get('user'))
-        {
-          headers.Authorization = `Bearer ${cookies.get('user')}`;
-        }
-        const res = await axios.get(`http://localhost:8000/products/${route.params.id}`, {headers});
+        const res = await axios.get(`http://localhost:8000/products/${route.params.id}`);
 
         product.value = res.data;
         loading.value=false;
-        authorized.value=true;
       } catch (e) {
         loading.value=false;
-        authorized.value=false;
         console.error(e);
       }
     };
